@@ -7,7 +7,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/packages" />
       <excludeFolder url="file://$MODULE_DIR$/test/instruments/packages" />
-      <excludeFolder url="file://$MODULE_DIR$/test/mocks/packages" />
       <excludeFolder url="file://$MODULE_DIR$/test/packages" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

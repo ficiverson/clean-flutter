@@ -6,7 +6,7 @@ import 'package:cleanflutter/model/user.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
 
 class UserRemoteDataSource {
-  Client _client = new Client(baseUrl:"https://randomuser.me/api/");
+  Client _client = new Client(baseUrl: "https://randomuser.me/api/");
   String endpoint = "?results=100";
 
   UserRemoteDataSource({Client client}) {
@@ -22,7 +22,7 @@ class UserRemoteDataSource {
           .map((r) => new User.fromMap(r))
           .toList();
       return users;
-    }  on HttpException catch(e) {
+    } on HttpException catch (e) {
       return [];
     } catch (err) {
       return [];
@@ -30,39 +30,55 @@ class UserRemoteDataSource {
   }
 }
 
-class UserLocalDataSource{
+class UserLocalDataSource {
+  bool testing = false;
 
-  UserLocalDataSource();
+  UserLocalDataSource({bool testing}) :
+        testing = testing != null ? testing : false;
 
   Future<List<User>> fetchUsers() async {
-     var res = await _readFile();
-     try {
-       List<Map<String, dynamic>> items = JSON.decode(res["results"]);
-       List<User> users = items
-           .map((r) => new User.fromMap(r))
-           .toList();
-       return users;
-     } catch (err) {
-       return [];
-     }
+    var res = await _readFile();
+    try {
+      List<Map<String, dynamic>> items;
+      if(testing){
+        items = res["results"];
+      } else {
+        items = JSON.decode(res["results"]);
+      }
+      List<User> users = items
+          .map((r) => new User.fromMap(r))
+          .toList();
+      return users;
+    } catch (err) {
+      return [];
+    }
   }
 
   Future<Null> saveUsers(List<User> users) async {
-    // write the data as a string to the file
-    List<Map<String, dynamic>> userMap = new List<Map<String, dynamic>>();
-    users.forEach((user) => userMap.add(user.toMap()));
-    Map results = new Map();
-    results["results"] = JSON.encode(userMap);
-    await (await _getFile()).writeAsString(JSON.encode(results).toString());
+    if (testing) {
+      //nothing to save its a framework problem
+
+    } else {
+      // write the data as a string to the file
+      List<Map<String, dynamic>> userMap = new List<Map<String, dynamic>>();
+      users.forEach((user) => userMap.add(user.toMap()));
+      Map results = new Map();
+      results["results"] = JSON.encode(userMap);
+      await (await _getFile()).writeAsString(JSON.encode(results).toString());
+    }
   }
 
 
   //helpers with files
 
   Future<File> _getFile() async {
-    // get the path to the document directory.
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    return new File('$dir/users.json');
+    if (testing) {
+      return await new File("test_mocks/users.json");
+    } else {
+      // get the path to the document directory.
+      String dir = (await getApplicationDocumentsDirectory()).path;
+      return new File('$dir/users.json');
+    }
   }
 
   Future<Map> _readFile() async {
