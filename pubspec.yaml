@@ -1,0 +1,19 @@
+name: cleanflutter
+description: A new Flutter project with a demo of clean architecture.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.0
+
+  path_provider: ^0.3.1
+
+  mock_web_server: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
