@@ -56,7 +56,6 @@ void main() {
   test('that can handle error response from server', () async {
     _server.enqueueResponse(new MockResponse()..httpCode = 404);
     var users = await userUseCase.fetchUsers(DataPolicy.network);
-
     expect(users.getStatus(), equals(Status.fail));
     expect(users.getData().length, equals(0));
   });
