@@ -30,7 +30,6 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   //Build UI
-
   getMainBody() {
     if (_loading) {
       return new Center(child: new Text("Loading all data"));
@@ -38,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage>
       return new Container(
           color: AppColors.platinumdark, child: new ListView.builder(
         itemCount: _users.length,
-        reverse: true,
+        reverse: false,
         itemBuilder: (_, int index) {
           return geRow(_users[index]);
         },
@@ -126,8 +125,8 @@ class _MyHomePageState extends State<MyHomePage>
                       })
                 ])));
   }
-
-  generateMenu() {
+//create a menu bar
+//  generateMenu() {
 //    IconButton menuHome = new IconButton(
 //      icon: new Icon(Icons.rss_feed, color: AppColors.blue_bubble),
 //      padding: new EdgeInsets.all(0.0),
@@ -155,26 +154,26 @@ class _MyHomePageState extends State<MyHomePage>
 //      },
 //    );
 
-    List<Widget> optionsMenu = new List<Widget>();
+ //   List<Widget> optionsMenu = new List<Widget>();
 //    optionsMenu.add(menuHome);
 //    optionsMenu.add(menuScan);
 //    optionsMenu.add(menuSettings);
-    return new Container(
-        height: _margin * 2.5,
-        decoration: new BoxDecoration(
-            color: AppColors.white,
-            border: new Border(
-                top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
-        child: new ButtonBar(
-          mainAxisSize: MainAxisSize.min,
-          alignment: MainAxisAlignment.spaceAround,
-          children: optionsMenu,
-        ));
-  }
+//    return new Container(
+//        height: _margin * 2.5,
+//        decoration: new BoxDecoration(
+//            color: AppColors.white,
+//            border: new Border(
+//                top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
+//        child: new ButtonBar(
+//          mainAxisSize: MainAxisSize.min,
+//          alignment: MainAxisAlignment.spaceAround,
+//          children: optionsMenu,
+//        ));
+//  }
 
 
   //Lifecycle methods
-
+  @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     _margin = PaddingUtils.getMargin(
@@ -198,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage>
           ]),
       endDrawer: getLanguageDrawer(),
       body: getMainBody(),
-      bottomNavigationBar: generateMenu(),
+     //bottomNavigationBar: generateMenu(),
     );
     return new IPhoneXPadding(child: _scaffold);
   }

@@ -8,6 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/packages" />
       <excludeFolder url="file://$MODULE_DIR$/test/instruments/packages" />
       <excludeFolder url="file://$MODULE_DIR$/test/packages" />
+      <excludeFolder url="file://$MODULE_DIR$/test/usecase/packages" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />

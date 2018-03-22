@@ -5,7 +5,7 @@ import 'package:cleanflutter/model/user.dart';
 import 'package:cleanflutter/repository/user_repository.dart';
 
 
-class UserUseCase<String> {
+class UserUseCase {
   UserRepository userRepository;
 
   UserUseCase(UserRepository userRepository) {
@@ -14,7 +14,9 @@ class UserUseCase<String> {
 
   Future<Result<List<User>>> fetchUsers(DataPolicy datapolicy) async {
     Result<List<User>> result = await userRepository.fetchUsers(datapolicy);
-    if (result.getData().length > 0 && datapolicy == DataPolicy.network_cache) {
+    if (result.getStatus() == Status.ok &&
+        result.getData().length > 0 &&
+        datapolicy == DataPolicy.network_cache) {
       userRepository.saveUsers(result.getData());
     }
     return result;

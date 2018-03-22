@@ -9,7 +9,8 @@ class AppColors {
   static const Color platinumlight = const Color(0xFFFCFCFC);
   static const Color palidwhite = const Color(0xFFfefefe);
   static const Color white = const Color(0x9FFFFFFFF);
-  static const Color blue_bubble = const Color(0xFF607D8B);
+  static const Color blue_bubble = const Color(0xFF607D8B); //const Color(0xFF9B26AF);
+  //static const Color blue_bubble = const Color(0xFF9B26AF);
 
 
   static const Color blackgradient = const Color(0x99000000);
