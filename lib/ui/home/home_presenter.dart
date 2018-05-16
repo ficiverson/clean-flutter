@@ -11,18 +11,23 @@ abstract class HomeViewContract {
 class HomePresenter {
   HomeViewContract _view;
 
-//  EventChannel eventChannel;
- // MethodChannel _removePocket;
+ //EventChannel eventChannel;
+ //MethodChannel _removePocket;
 
   HomePresenter(this._view) {
-//    eventChannel = Injector.eventChannel;
-//    this._removePocket = Injector.eventRemovePocket;
+    fetchUsers(DataPolicy.network_cache);
   }
 
+  /**
+   * Fetch the user data
+   *
+   * params: datapolicy
+   */
   fetchUsers(DataPolicy datapolicy) async {
     var users = await new UserUseCase(new UserRepository(
         new UserRemoteDataSource(), new UserLocalDataSource()))
         .fetchUsers(datapolicy);
+
     _view.onLoadUsers(users);
   }
 

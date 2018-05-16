@@ -1,3 +1,4 @@
+import 'package:cleanflutter/ui/home/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:cleanflutter/model/result.dart';
 import 'package:cleanflutter/model/user.dart';
@@ -6,6 +7,7 @@ import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/iphone_x_padding.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/padding_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cleanflutter/ui/home/row_view.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -39,138 +41,11 @@ class _MyHomePageState extends State<MyHomePage>
         itemCount: _users.length,
         reverse: false,
         itemBuilder: (_, int index) {
-          return geRow(_users[index]);
+          return new RowView(_users[index]);
         },
       ));
     }
   }
-
-  Widget geRow(User user) {
-    return new Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        child: new Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Container(
-                  margin: const EdgeInsets.only(left: 16.0),
-                  width: 40.0,
-                  height: 40.0,
-                  decoration: new BoxDecoration(
-                      borderRadius: new BorderRadius.all(
-                          new Radius.circular(50.0)),
-                      image: new DecorationImage(
-                          image: new NetworkImage(user.picture),
-                          fit: BoxFit.cover),
-                      color: AppColors.blue_bubble)),
-              new Container(
-                  width: 250.0,
-                  decoration: new BoxDecoration(
-                      color: AppColors.blue_bubble,
-                      borderRadius:
-                      new BorderRadius.all(new Radius.circular(10.0))),
-                  margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-                  child: new Column(children: <Widget>[new Container(
-                      padding: new EdgeInsets.all(10.0),
-                      child: new Text("Name: " + user.first,
-                          maxLines: 3,
-                          style: new TextStyle(color: AppColors.white))),
-                  new Container(
-                      padding: new EdgeInsets.all(10.0),
-                      child: new Text("City: " + user.city,
-                          maxLines: 3,
-                          style: new TextStyle(color: AppColors.white))),
-                  ]))
-            ]));
-  }
-
-  Widget getLanguageDrawer() {
-    return new Drawer(
-        child: new Center(
-
-            child: new Column(mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  new CupertinoButton(
-                      color: AppColors.palidwhite,
-                      child: new Text(
-                          "From network",
-                          style: new TextStyle(color: AppColors.blue_bubble)),
-                      onPressed: () {
-                        setState(() {
-                          _presenter.fetchUsers(DataPolicy.network);
-                          Navigator.of(context).pop();
-                        });
-                      }),
-                  new CupertinoButton(
-                      color: AppColors.palidwhite,
-                      child: new Text(
-                          "From network_cache",
-                          style: new TextStyle(color: AppColors.blue_bubble)),
-                      onPressed: () {
-                        setState(() {
-                          _presenter.fetchUsers(DataPolicy.network_cache);
-                          Navigator.of(context).pop();
-                        });
-                      }),
-                  new CupertinoButton(
-                      color: AppColors.palidwhite,
-                      child: new Text(
-                          "From local storage",
-                          style: new TextStyle(color: AppColors.blue_bubble)),
-                      onPressed: () {
-                        setState(() {
-                          _presenter.fetchUsers(DataPolicy.cache);
-                          Navigator.of(context).pop();
-                        });
-                      })
-                ])));
-  }
-//create a menu bar
-//  generateMenu() {
-//    IconButton menuHome = new IconButton(
-//      icon: new Icon(Icons.rss_feed, color: AppColors.blue_bubble),
-//      padding: new EdgeInsets.all(0.0),
-//      disabledColor: AppColors.dimgrey,
-//      onPressed: () {
-//
-//      },
-//    );
-//    IconButton menuScan;
-//    menuScan = new IconButton(
-//      icon: new Icon(Icons.landscape, color: AppColors.blue_bubble),
-//      padding: new EdgeInsets.all(0.0),
-//      disabledColor: AppColors.dimgrey,
-//      onPressed: () {
-//
-//      },
-//    );
-//
-//    IconButton menuSettings = new IconButton(
-//      icon: new Icon(Icons.radio, color: AppColors.blue_bubble),
-//      padding: new EdgeInsets.all(0.0),
-//      disabledColor: AppColors.dimgrey,
-//      onPressed: () {
-//
-//      },
-//    );
-
- //   List<Widget> optionsMenu = new List<Widget>();
-//    optionsMenu.add(menuHome);
-//    optionsMenu.add(menuScan);
-//    optionsMenu.add(menuSettings);
-//    return new Container(
-//        height: _margin * 2.5,
-//        decoration: new BoxDecoration(
-//            color: AppColors.white,
-//            border: new Border(
-//                top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
-//        child: new ButtonBar(
-//          mainAxisSize: MainAxisSize.min,
-//          alignment: MainAxisAlignment.spaceAround,
-//          children: optionsMenu,
-//        ));
-//  }
-
 
   //Lifecycle methods
   @override
@@ -195,9 +70,8 @@ class _MyHomePageState extends State<MyHomePage>
                 color: AppColors.white,
                 iconSize: 35.0)
           ]),
-      endDrawer: getLanguageDrawer(),
+      endDrawer: new DrawerMenu(_reloadData),
       body: getMainBody(),
-     //bottomNavigationBar: generateMenu(),
     );
     return new IPhoneXPadding(child: _scaffold);
   }
@@ -206,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
     _presenter = new HomePresenter(this);
-    _presenter.fetchUsers(DataPolicy.network_cache);
   }
 
   @override
@@ -215,6 +88,13 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   //view implementation methods
+  void _reloadData(DataPolicy policy){
+    setState(() {
+      _presenter.fetchUsers(policy);
+      Navigator.of(context).pop();
+    });
+  }
+
 
   @override
   onLoadUsers(Result<List<User>> result) {
