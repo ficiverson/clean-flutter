@@ -1,4 +1,4 @@
-class User {
+class UserSource {
 
   String gender;
   String email;
@@ -10,7 +10,7 @@ class User {
   String state;
   String postcode;
 
-  User.fromMap(Map<String, dynamic> map)
+  UserSource.fromMap(Map<String, dynamic> map)
       :
         gender = map["gender"],
         email = map["email"],

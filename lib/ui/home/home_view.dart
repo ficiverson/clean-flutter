@@ -1,9 +1,9 @@
 import 'package:cleanflutter/ui/animation/flight_animation.dart';
 import 'package:cleanflutter/ui/customview/custom_touch_view.dart';
 import 'package:cleanflutter/ui/home/drawer_menu.dart';
+import 'package:cleanflutter/ui/model/user.dart';
 import 'package:flutter/material.dart';
-import 'package:cleanflutter/model/result.dart';
-import 'package:cleanflutter/model/user.dart';
+import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/ui/home/home_presenter.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/iphone_x_padding.dart';

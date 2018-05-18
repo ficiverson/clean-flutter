@@ -1,9 +1,8 @@
-import 'package:cleanflutter/datasource/user_datasource.dart';
+import 'package:cleanflutter/data/datasource/user_datasource.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
-import 'package:cleanflutter/model/result.dart';
-import 'package:cleanflutter/repository/user_repository.dart';
+import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
-import 'package:cleanflutter/usecase/user_use_case.dart';
+import 'package:cleanflutter/data/usecase/user_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import '../instruments/helper.dart';

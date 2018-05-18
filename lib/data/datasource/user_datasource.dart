@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:cleanflutter/model/user.dart';
+import 'package:cleanflutter/data/model/user.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
 
 /**
@@ -16,13 +16,13 @@ class UserRemoteDataSource {
     _client = client != null ? client : _client;
   }
 
-  Future<List<User>> fetchUsers() async {
+  Future<List<UserSource>> fetchUsers() async {
     try {
       Uri url = Uri.parse(_client.baseUrl + endpoint);
       var res = await this._client.get(url);
       List<Map<String, dynamic>> items = res["results"];
-      List<User> users = items
-          .map((r) => new User.fromMap(r))
+      List<UserSource> users = items
+          .map((r) => new UserSource.fromMap(r))
           .toList();
       return users;
     } on HttpException catch (e) {
@@ -37,9 +37,9 @@ class UserRemoteDataSource {
  * Local data source
  */
 abstract class UserLocalDataSource {
-  Future<List<User>> fetchUsers();
+  Future<List<UserSource>> fetchUsers();
 
-  Future<Null> saveUsers(List<User> users);
+  Future<Null> saveUsers(List<UserSource> users);
 }
 
 class UserFileLocalDataSource implements UserLocalDataSource {
@@ -48,7 +48,7 @@ class UserFileLocalDataSource implements UserLocalDataSource {
   UserFileLocalDataSource({bool testing}) :
         testing = testing != null ? testing : false;
 
-  Future<List<User>> fetchUsers() async {
+  Future<List<UserSource>> fetchUsers() async {
     var res = await _readFile();
     try {
       List<Map<String, dynamic>> items;
@@ -57,8 +57,8 @@ class UserFileLocalDataSource implements UserLocalDataSource {
       } else {
         items = JSON.decode(res["results"]);
       }
-      List<User> users = items
-          .map((r) => new User.fromMap(r))
+      List<UserSource> users = items
+          .map((r) => new UserSource.fromMap(r))
           .toList();
       return users;
     } catch (err) {
@@ -66,7 +66,7 @@ class UserFileLocalDataSource implements UserLocalDataSource {
     }
   }
 
-  Future<Null> saveUsers(List<User> users) async {
+  Future<Null> saveUsers(List<UserSource> users) async {
     if (testing) {
       //nothing to save its a framework problem
 
@@ -112,12 +112,12 @@ class UserDatabaseLocalDataSource implements UserLocalDataSource {
   UserDatabaseLocalDataSource({bool testing}) :
         testing = testing != null ? testing : false;
 
-  Future<List<User>> fetchUsers() async {
+  Future<List<UserSource>> fetchUsers() async {
     //TODO implement a database implementation to persist data
     return null;
   }
 
-  Future<Null> saveUsers(List<User> users) async {
+  Future<Null> saveUsers(List<UserSource> users) async {
     //TODO database implementation to persist data
     return null;
   }

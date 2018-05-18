@@ -1,9 +1,7 @@
-import 'package:cleanflutter/datasource/user_datasource.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
-import 'package:cleanflutter/model/result.dart';
-import 'package:cleanflutter/model/user.dart';
-import 'package:cleanflutter/repository/user_repository.dart';
-import 'package:cleanflutter/usecase/user_use_case.dart';
+import 'package:cleanflutter/data/result/result.dart';
+import 'package:cleanflutter/data/usecase/user_use_case.dart';
+import 'package:cleanflutter/ui/model/user.dart';
 
 abstract class HomeViewContract {
   onLoadUsers(Result<List<User>> users);
@@ -25,7 +23,8 @@ class HomePresenter {
    * params: datapolicy
    */
   fetchUsers(DataPolicy datapolicy) async {
-    var users = await new UserUseCase(Injector.provideUserRepository())
+    var users = await new UserUseCase(
+        Injector.provideUserRepository())
         .fetchUsers(datapolicy);
     _view.onLoadUsers(users);
   }

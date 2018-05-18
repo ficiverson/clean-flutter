@@ -1,5 +1,5 @@
-import 'package:cleanflutter/datasource/user_datasource.dart';
-import 'package:cleanflutter/repository/user_repository.dart';
+import 'package:cleanflutter/data/datasource/user_datasource.dart';
+import 'package:cleanflutter/data/repository/user_repository.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
 import 'package:flutter/services.dart';
 

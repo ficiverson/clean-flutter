@@ -1,4 +1,5 @@
-import 'package:cleanflutter/model/user.dart';
+
+import 'package:cleanflutter/ui/model/user.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:flutter/widgets.dart';
 

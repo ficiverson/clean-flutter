@@ -1,4 +1,4 @@
-import 'package:cleanflutter/model/result.dart';
+import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

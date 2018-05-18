@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:cleanflutter/datasource/user_datasource.dart';
-import 'package:cleanflutter/model/result.dart';
-import 'package:cleanflutter/model/user.dart';
+import 'package:cleanflutter/data/datasource/user_datasource.dart';
+import 'package:cleanflutter/data/result/result.dart';
+import 'package:cleanflutter/data/model/user.dart';
 
 abstract class UserRepository {
-  Future<Result<List<User>>> fetchUsers(DataPolicy datapolicy);
-
-  saveUsers(List<User> users);
+  Future<Result<List<UserSource>>> fetchUsers(DataPolicy datapolicy);
+  saveUsers(List<UserSource> users);
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -20,8 +19,8 @@ class UserRepositoryImpl implements UserRepository {
     this.userLocalDataSource = userLocalDataSource;
   }
 
-  Future<Result<List<User>>> fetchUsers(DataPolicy datapolicy) async {
-    List<User> users;
+  Future<Result<List<UserSource>>> fetchUsers(DataPolicy datapolicy) async {
+    List<UserSource> users;
     if (datapolicy == DataPolicy.network ||
         datapolicy == DataPolicy.network_cache) {
       users = await userRemoteDataSource.fetchUsers();
@@ -36,7 +35,7 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  saveUsers(List<User> users) {
+  saveUsers(List<UserSource> users) {
     userLocalDataSource.saveUsers(users);
   }
 }
