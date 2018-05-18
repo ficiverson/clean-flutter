@@ -11,8 +11,8 @@ class AppColors {
   static const Color white = const Color(0x9FFFFFFFF);
 
   static const Color blue_bubble = const Color(0xFF9B26AF);
-  //static const Color blue_bubble = const Color(0xFF607D8B); //const Color(0xFF9B26AF);
 
+  //static const Color blue_bubble = const Color(0xFF607D8B); //const Color(0xFF9B26AF);
 
 
   static const Color blackgradient = const Color(0x99000000);
@@ -27,5 +27,5 @@ class AppColors {
 
 
   static const Color treeGreen = const Color(0xFF067206);
-
+  static const Color sand = const Color(0xFFd6d6c2);
 }

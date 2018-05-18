@@ -111,7 +111,7 @@ class BackgroundPainter extends CustomPainter {
 
     canvas.drawPath(
       path,
-      new Paint()..color = Colors.white.withOpacity(opacity),
+      new Paint()..color = AppColors.sand.withOpacity(opacity),
     );
   }
 
