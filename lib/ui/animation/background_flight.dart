@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -20,8 +21,7 @@ class BackgroundPainter extends CustomPainter {
     _drawArc(canvas, size, 145.0, 80.0, 145.0, 0.35);
     _drawArc(canvas, size, 80.0, 50.0, 95.0, 0.35);
 
-    _drawSunRays(canvas);
-    _drawSun(canvas);
+    _drawMoon(canvas);
 
     _drawStar(canvas, 30.0, 35.0, 2.0, 0.35);
     _drawStar(canvas, 25.0, 150.0, 2.5, 0.6);
@@ -70,15 +70,11 @@ class BackgroundPainter extends CustomPainter {
   }
 
   _getSkyColors() {
-    DateTime now = new DateTime.now();
-    int timeAsMins = now.hour * 60 + now.minute;
-    var lerpValue =
-    (timeAsMins <= 720) ? timeAsMins / 720 : (2 - timeAsMins / 720);
     var topSkyColor = Color.lerp(
-        Colors.indigo.shade700, Colors.lightBlueAccent.shade700, lerpValue);
+        Colors.indigo.shade700, Colors.blueGrey.shade700, animationValue);
     var bottomSkyColor = Color
         .lerp(
-        Colors.indigo.shade100, Colors.lightBlueAccent.shade100, lerpValue)
+        Colors.indigo.shade100, Colors.blueAccent.shade100, animationValue)
         .withOpacity(0.8);
     return [topSkyColor, bottomSkyColor];
   }
@@ -131,7 +127,7 @@ class BackgroundPainter extends CustomPainter {
     );
     path.close();
 
-    canvas.drawPath(path, new Paint()..color = Colors.white);
+    canvas.drawPath(path, new Paint()..color = AppColors.treeGreen);
   }
 
   _drawStar(Canvas canvas, double dx, double dy, double radius,
@@ -193,13 +189,13 @@ class BackgroundPainter extends CustomPainter {
         new Paint()..color = Colors.white.withOpacity(opacity));
   }
 
-  _drawSun(Canvas canvas) {
+  _drawMoon(Canvas canvas) {
     var sunCenter = new Offset(60.0, 90.0);
 
     var sunInnerGradientRadius = 35.0;
     var circleInnerGradientShader = new RadialGradient(colors: [
-      Colors.white.withOpacity(0.5),
-      Colors.white.withOpacity(0.0)
+      Colors.yellowAccent.withOpacity(0.5),
+      Colors.yellowAccent.withOpacity(0.0)
     ]).createShader(
       new Rect.fromCircle(center: sunCenter, radius: sunInnerGradientRadius),
     );
@@ -208,8 +204,8 @@ class BackgroundPainter extends CustomPainter {
 
     var sunOuternGradientRadius = 50.0;
     var circleOuternGradientShader = new RadialGradient(colors: [
-      Colors.white.withOpacity(0.35),
-      Colors.white.withOpacity(0.0)
+      Colors.yellowAccent.withOpacity(0.35),
+      Colors.yellowAccent.withOpacity(0.0)
     ]).createShader(
       new Rect.fromCircle(center: sunCenter, radius: sunOuternGradientRadius),
     );
@@ -217,38 +213,6 @@ class BackgroundPainter extends CustomPainter {
         new Paint()..shader = circleOuternGradientShader);
 
     canvas.drawCircle(sunCenter, 18.0, new Paint()..color = Colors.white);
-  }
-
-  _drawSunRays(Canvas canvas) {
-    var sunCenter = new Offset(60.0, 90.0);
-
-    var sunRayColors = [
-      Colors.white.withOpacity(0.0),
-      Colors.white.withOpacity(0.5),
-      Colors.white.withOpacity(0.0)
-    ];
-
-    var sunRayHorizontalRect = new Rect.fromLTRB(sunCenter.dx - 60.0,
-        sunCenter.dy - 18.0, sunCenter.dx + 60.0, sunCenter.dy + 18.0);
-    var sunRayVerticalRect = new Rect.fromLTRB(sunCenter.dx - 18.0,
-        sunCenter.dy - 60.0, sunCenter.dx + 18.0, sunCenter.dy + 60.0);
-    var sunRayHorizontalGradient = new LinearGradient(colors: sunRayColors);
-    var sunRayVerticalGradient = new LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: sunRayColors,
-    );
-
-    canvas.drawRect(
-      sunRayHorizontalRect,
-      new Paint()
-        ..shader = sunRayHorizontalGradient.createShader(sunRayHorizontalRect),
-    );
-    canvas.drawRect(
-      sunRayVerticalRect,
-      new Paint()
-        ..shader = sunRayVerticalGradient.createShader(sunRayVerticalRect),
-    );
   }
 
   @override

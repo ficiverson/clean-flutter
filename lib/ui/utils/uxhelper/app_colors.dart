@@ -25,4 +25,7 @@ class AppColors {
   static const Color fontGrey = const Color(0xFF85858b);
   static const Color fontPurple = const Color(0xFF9B26AF);
 
+
+  static const Color treeGreen = const Color(0xFF067206);
+
 }

@@ -19,6 +19,7 @@ class _FlightAnimationState extends State<FlightAnimation>
 
   AnimationController _controller;
   Animation _animation;
+  Animation<double> animationBackground;
   Alignment initAngleState = Alignment.topLeft;
   Alignment endAngleState = Alignment.bottomRight;
 
@@ -53,6 +54,9 @@ class _FlightAnimationState extends State<FlightAnimation>
 
     _animation = _tween.animate(_controller);
 
+    animationBackground =
+    new CurvedAnimation(parent: _controller, curve: new ElasticOutCurve(0.6));
+
     _controller.forward();
   }
 
@@ -63,7 +67,9 @@ class _FlightAnimationState extends State<FlightAnimation>
       children: <Widget>[
         new CustomPaint(
           painter:
-          new BackgroundPainter(0.0, new Offset(0.0, 0.0)),
+          new BackgroundPainter(
+              animationBackground.value < 0 ? animationBackground.value : 1 -
+                  animationBackground.value, new Offset(200.0, 150.0)),
           child: new Container(height: MediaQuery
               .of(context)
               .size
