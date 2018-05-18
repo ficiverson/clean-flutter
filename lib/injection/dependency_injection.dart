@@ -53,7 +53,8 @@ class Injector {
   }
 
   static UserLocalDataSource provideLocalDataSource({bool testing}) {
-    return new UserLocalDataSource(testing: testing);
+    //TODO provide a file storage or database implementation
+    return new UserFileLocalDataSource(testing: testing);
   }
 
   Injector._internal();

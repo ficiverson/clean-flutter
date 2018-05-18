@@ -20,7 +20,7 @@ class HomePresenter {
   }
 
   /**
-   * Fetch the user data
+   * Fetch the user data and persist when policy is storage
    *
    * params: datapolicy
    */

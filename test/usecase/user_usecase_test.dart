@@ -21,7 +21,8 @@ void main() {
     await _server.start();
     _client = new Client(baseUrl: _server.url);
     userLocalDataSource = Injector.provideLocalDataSource(testing: true);
-    userUseCase = new UserUseCase(Injector.provideUserRepository(client: _client));
+    userUseCase =
+    new UserUseCase(Injector.provideUserRepository(client: _client));
   });
 
   tearDownAll(() async {

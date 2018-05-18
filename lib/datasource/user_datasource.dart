@@ -5,6 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:cleanflutter/model/user.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
 
+/**
+ * Remote data source
+ */
 class UserRemoteDataSource {
   Client _client = new Client(baseUrl: "https://randomuser.me/api/");
   String endpoint = "?results=100";
@@ -30,17 +33,26 @@ class UserRemoteDataSource {
   }
 }
 
-class UserLocalDataSource {
+/**
+ * Local data source
+ */
+abstract class UserLocalDataSource {
+  Future<List<User>> fetchUsers();
+
+  Future<Null> saveUsers(List<User> users);
+}
+
+class UserFileLocalDataSource implements UserLocalDataSource {
   bool testing = false;
 
-  UserLocalDataSource({bool testing}) :
+  UserFileLocalDataSource({bool testing}) :
         testing = testing != null ? testing : false;
 
   Future<List<User>> fetchUsers() async {
     var res = await _readFile();
     try {
       List<Map<String, dynamic>> items;
-      if(testing){
+      if (testing) {
         items = res["results"];
       } else {
         items = JSON.decode(res["results"]);
@@ -90,6 +102,24 @@ class UserLocalDataSource {
     } on FileSystemException {
       return JSON.decode("");
     }
+  }
+}
+
+
+class UserDatabaseLocalDataSource implements UserLocalDataSource {
+  bool testing = false;
+
+  UserDatabaseLocalDataSource({bool testing}) :
+        testing = testing != null ? testing : false;
+
+  Future<List<User>> fetchUsers() async {
+    //TODO implement a database implementation to persist data
+    return null;
+  }
+
+  Future<Null> saveUsers(List<User> users) async {
+    //TODO database implementation to persist data
+    return null;
   }
 
 }
