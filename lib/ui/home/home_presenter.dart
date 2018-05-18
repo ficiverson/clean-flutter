@@ -1,4 +1,5 @@
 import 'package:cleanflutter/datasource/user_datasource.dart';
+import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/model/result.dart';
 import 'package:cleanflutter/model/user.dart';
 import 'package:cleanflutter/repository/user_repository.dart';
@@ -11,8 +12,8 @@ abstract class HomeViewContract {
 class HomePresenter {
   HomeViewContract _view;
 
- //EventChannel eventChannel;
- //MethodChannel _removePocket;
+  //EventChannel eventChannel;
+  //MethodChannel _removePocket;
 
   HomePresenter(this._view) {
     fetchUsers(DataPolicy.network_cache);
@@ -24,10 +25,8 @@ class HomePresenter {
    * params: datapolicy
    */
   fetchUsers(DataPolicy datapolicy) async {
-    var users = await new UserUseCase(new UserRepository(
-        new UserRemoteDataSource(), new UserLocalDataSource()))
+    var users = await new UserUseCase(Injector.provideUserRepository())
         .fetchUsers(datapolicy);
-
     _view.onLoadUsers(users);
   }
 

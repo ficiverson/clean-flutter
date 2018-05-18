@@ -178,7 +178,6 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-
   @override
   onLoadUsers(Result<List<User>> result) {
     if (result.status == Status.ok) {

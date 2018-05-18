@@ -4,11 +4,18 @@ import 'package:cleanflutter/datasource/user_datasource.dart';
 import 'package:cleanflutter/model/result.dart';
 import 'package:cleanflutter/model/user.dart';
 
-class UserRepository {
+abstract class UserRepository {
+  Future<Result<List<User>>> fetchUsers(DataPolicy datapolicy);
+
+  saveUsers(List<User> users);
+}
+
+class UserRepositoryImpl implements UserRepository {
   UserRemoteDataSource userRemoteDataSource;
   UserLocalDataSource userLocalDataSource;
 
-  UserRepository(UserRemoteDataSource remoteDataSource, UserLocalDataSource userLocalDataSource) {
+  UserRepositoryImpl(UserRemoteDataSource remoteDataSource,
+      UserLocalDataSource userLocalDataSource) {
     this.userRemoteDataSource = remoteDataSource;
     this.userLocalDataSource = userLocalDataSource;
   }
@@ -19,7 +26,7 @@ class UserRepository {
         datapolicy == DataPolicy.network_cache) {
       users = await userRemoteDataSource.fetchUsers();
     } else {
-       users = await userLocalDataSource.fetchUsers();
+      users = await userLocalDataSource.fetchUsers();
     }
 
     if (users.length > 0) {
@@ -29,7 +36,7 @@ class UserRepository {
     }
   }
 
-  saveUsers(List<User> users){
+  saveUsers(List<User> users) {
     userLocalDataSource.saveUsers(users);
   }
 }

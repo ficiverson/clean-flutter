@@ -1,8 +1,11 @@
+import 'package:cleanflutter/datasource/user_datasource.dart';
+import 'package:cleanflutter/repository/user_repository.dart';
+import 'package:cleanflutter/ui/utils/http/client.dart';
 import 'package:flutter/services.dart';
 
 enum Flavor {
   MOCK,
-  INT,
+  PROD,
   STAGE
 }
 
@@ -28,6 +31,29 @@ class Injector {
 
   factory Injector() {
     return _singleton;
+  }
+
+  static UserRepository provideUserRepository({Client client}) {
+    switch (_flavor) {
+      case Flavor.MOCK:
+        return new UserRepositoryImpl(
+            new UserRemoteDataSource(client: client),
+            provideLocalDataSource(testing: true));
+      case Flavor.PROD:
+        return new UserRepositoryImpl(
+            new UserRemoteDataSource(), provideLocalDataSource());
+      case Flavor.STAGE:
+        return new UserRepositoryImpl(
+            new UserRemoteDataSource(), provideLocalDataSource());
+      default:
+        return new UserRepositoryImpl(
+            new UserRemoteDataSource(client: client),
+            provideLocalDataSource(testing: true));
+    }
+  }
+
+  static UserLocalDataSource provideLocalDataSource({bool testing}) {
+    return new UserLocalDataSource(testing: true);
   }
 
   Injector._internal();

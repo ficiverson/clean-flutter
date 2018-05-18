@@ -15,7 +15,9 @@ class UserUseCase {
   Future<Result<List<User>>> fetchUsers(DataPolicy datapolicy) async {
     Result<List<User>> result = await userRepository.fetchUsers(datapolicy);
     if (result.getStatus() == Status.ok &&
-        result.getData().length > 0 &&
+        result
+            .getData()
+            .length > 0 &&
         datapolicy == DataPolicy.network_cache) {
       userRepository.saveUsers(result.getData());
     }
