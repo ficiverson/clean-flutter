@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/data/model/user.dart';
 import 'package:cleanflutter/data/repository/user_repository.dart';
-import 'package:cleanflutter/data/model/model_converter.dart';
 import 'package:cleanflutter/ui/model/user.dart';
 
 

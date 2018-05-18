@@ -1,6 +1,3 @@
-
-class Convert<T, P> {
-  P fromSourceModel(T fromModel) {
-    return null;
-  }
+abstract class Convert<T, P> {
+  P fromSourceModel(T fromModel);
 }
