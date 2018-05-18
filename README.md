@@ -6,6 +6,6 @@ Thanks to [alessandroaime] https://github.com/alessandroaime/Weather/blob/master
 
 ## Some screenshots
  
-![Image of the list] https://github.com/ficiverson/clean-flutter/list.png
-![Image of the touch example] https://github.com/ficiverson/clean-flutter/touch.png
-![Image of the animation] https://github.com/ficiverson/clean-flutter/fly.png
+![Image of the list] https://github.com/ficiverson/clean-flutter/list.png?raw=true
+![Image of the touch example] https://github.com/ficiverson/clean-flutter/touch.png?raw=true
+![Image of the animation] https://github.com/ficiverson/clean-flutter/fly.png?raw=true
