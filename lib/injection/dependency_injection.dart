@@ -53,7 +53,7 @@ class Injector {
   }
 
   static UserLocalDataSource provideLocalDataSource({bool testing}) {
-    return new UserLocalDataSource(testing: true);
+    return new UserLocalDataSource(testing: testing);
   }
 
   Injector._internal();
