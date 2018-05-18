@@ -1,8 +1,11 @@
 # cleanflutter
 
-A new Flutter project with a demo of clean architecture.
+A new Flutter project with a demo of clean architecture to list users from network, local storage or both. Also I provide some examples using custom views and animations.
 
-## Getting Started
+Thanks to [alessandroaime] https://github.com/alessandroaime/Weather/blob/master/lib/header_painter.dart for this awesome canvas background to show the sample.
 
-For help getting started with Flutter, view our online
-[documentation](http://flutter.io/).
+## Some screenshots
+ 
+![Image of the list] https://github.com/ficiverson/clean-flutter/list.png
+![Image of the touch example] https://github.com/ficiverson/clean-flutter/touch.png
+![Image of the animation] https://github.com/ficiverson/clean-flutter/fly.png
