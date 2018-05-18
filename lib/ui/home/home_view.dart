@@ -1,3 +1,5 @@
+import 'package:cleanflutter/ui/animation/flight_animation.dart';
+import 'package:cleanflutter/ui/customview/custom_touch_view.dart';
 import 'package:cleanflutter/ui/home/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:cleanflutter/model/result.dart';
@@ -9,15 +11,19 @@ import 'package:cleanflutter/ui/utils/uxhelper/padding_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cleanflutter/ui/home/row_view.dart';
 
+enum StateMenu { LIST, POINTER, ANIMATION }
+
 class MyHomePage extends StatefulWidget {
   @override
   State createState() => new _MyHomePageState();
 }
 
+
 class _MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin
     implements HomeViewContract {
 
+  StateMenu currentState = StateMenu.LIST;
   HomePresenter _presenter;
   Scaffold _scaffold;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -33,18 +39,94 @@ class _MyHomePageState extends State<MyHomePage>
 
   //Build UI
   getMainBody() {
-    if (_loading) {
-      return new Center(child: new Text("Loading all data"));
-    } else {
-      return new Container(
-          color: AppColors.platinumdark, child: new ListView.builder(
-        itemCount: _users.length,
-        reverse: false,
-        itemBuilder: (_, int index) {
-          return new RowView(_users[index]);
-        },
-      ));
+    switch (currentState) {
+      case StateMenu.LIST:
+        var returnWidget;
+        if (_loading) {
+          returnWidget = new Center(child: new Text("Loading all data"));
+        } else {
+          returnWidget = new Container(
+              color: AppColors.platinumdark, child: new ListView.builder(
+            itemCount: _users.length,
+            reverse: false,
+            itemBuilder: (_, int index) {
+              return new RowView(_users[index]);
+            },
+          ));
+        }
+        return returnWidget;
+
+      case StateMenu.ANIMATION:
+        return new Container(child: new FlightAnimation());
+
+      case StateMenu.POINTER:
+        return new Container(
+            decoration: new BoxDecoration(
+              color: Colors.white,
+              border: new Border.all(
+                color: AppColors.blue_bubble,
+                width: 2.0,
+              ),
+            ),
+            child: new Center(
+                child: new CustomTouchView()
+            ));
+
+      default:
+        throw new StateError('Unexpected action [${currentState}]');
     }
+  }
+
+  //create a menu bar
+  generateMenu() {
+    IconButton menuHome = new IconButton(
+      icon: new Icon(Icons.rss_feed, color: AppColors.blue_bubble),
+      padding: new EdgeInsets.all(0.0),
+      disabledColor: AppColors.dimgrey,
+      onPressed: () {
+        setState(() {
+          currentState = StateMenu.LIST;
+        });
+      },
+    );
+    IconButton menuScan;
+    menuScan = new IconButton(
+      icon: new Icon(Icons.touch_app, color: AppColors.blue_bubble),
+      padding: new EdgeInsets.all(0.0),
+      disabledColor: AppColors.dimgrey,
+      onPressed: () {
+        setState(() {
+          currentState = StateMenu.POINTER;
+        });
+      },
+    );
+
+    IconButton menuSettings = new IconButton(
+      icon: new Icon(Icons.flight_land, color: AppColors.blue_bubble),
+      padding: new EdgeInsets.all(0.0),
+      disabledColor: AppColors.dimgrey,
+      onPressed: () {
+        setState(() {
+          currentState = StateMenu.ANIMATION;
+        });
+      },
+    );
+
+    List<Widget> optionsMenu = new List<Widget>();
+    optionsMenu.add(menuHome);
+    optionsMenu.add(menuScan);
+    optionsMenu.add(menuSettings);
+    return new Container(
+        height: _margin * 2.5,
+        decoration: new BoxDecoration(
+            color: AppColors.white,
+            border: new Border(
+                top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
+        child: new ButtonBar(
+          mainAxisSize: MainAxisSize.min,
+          alignment: MainAxisAlignment.spaceAround,
+          children: optionsMenu,
+        ));
   }
 
   //Lifecycle methods
@@ -72,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage>
           ]),
       endDrawer: new DrawerMenu(_reloadData),
       body: getMainBody(),
+      bottomNavigationBar: generateMenu(),
     );
     return new IPhoneXPadding(child: _scaffold);
   }
@@ -88,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   //view implementation methods
-  void _reloadData(DataPolicy policy){
+  void _reloadData(DataPolicy policy) {
     setState(() {
       _presenter.fetchUsers(policy);
       Navigator.of(context).pop();
