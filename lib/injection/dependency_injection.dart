@@ -23,11 +23,11 @@ class Injector {
     return _flavor;
   }
 
-  static const MethodChannel eventCloseScanChannel = const MethodChannel(
-      'halotex.flutter.io/scan_close');
+  static const MethodChannel methodChanel = const MethodChannel(
+      'clean.flutter.io/cameraResult');
 
   static const EventChannel eventChannel = const EventChannel(
-      'halotex.flutter.io/scan_result');
+      'clean.flutter.io/stream');
 
   factory Injector() {
     return _singleton;
@@ -53,7 +53,7 @@ class Injector {
   }
 
   static UserLocalDataSource provideLocalDataSource({bool testing}) {
-    //TODO provide a file storage or database implementation
+    //TODO provide a file storage or database implementation depend on flavor
     return new UserFileLocalDataSource(testing: testing);
   }
 

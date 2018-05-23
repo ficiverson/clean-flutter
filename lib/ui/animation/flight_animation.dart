@@ -85,8 +85,9 @@ class _FlightAnimationState extends State<FlightAnimation>
             child: new Transform.rotate(
               angle: _angle,
               child: new Icon(
+                //REPLACEME
                 Icons.flight,
-//                Icons.radio,
+                // Icons.radio,
                 color: AppColors.blue_bubble,
                 size: 90.0,
               ),

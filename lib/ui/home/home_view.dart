@@ -163,10 +163,12 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
     _presenter = new HomePresenter(this);
+    _presenter.init();
   }
 
   @override
   void dispose() {
+    _presenter.dispose();
     super.dispose();
   }
 
@@ -179,12 +181,19 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   @override
-  onLoadUsers(Result<List<User>> result) {
-    if (result.status == Status.ok) {
-      _users = result.getData();
-      setState(() => _loading = false);
-    } else {
-      print("error sorry :(");
-    }
+  onLoadUsers(List<User> users) {
+    _users = users;
+    setState(() => _loading = false);
+  }
+
+  @override
+  onError(String msg) {
+    //TODO show a popup with the error
+    print(msg);
+  }
+
+  @override
+  onUpdateChannel(result) {
+    print("Result $result");
   }
 }
