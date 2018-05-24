@@ -194,6 +194,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   onUpdateChannel(result) {
-    print("Result $result");
+    print("Result >>> $result");
   }
 }
