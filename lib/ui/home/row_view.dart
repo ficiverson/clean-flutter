@@ -1,4 +1,3 @@
-
 import 'package:cleanflutter/ui/model/user.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:flutter/widgets.dart';
@@ -8,10 +7,11 @@ class RowView extends StatelessWidget {
 
   User user;
 
-  RowView(User user){
+  RowView(User user) {
     this.user = user;
   }
 
+  //TODO add a link to second screen with a gesture detector??
   @override
   Widget build(BuildContext context) {
     return new Container(
