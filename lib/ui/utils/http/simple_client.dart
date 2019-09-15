@@ -4,12 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 
-enum HTTPMethod {
-  GET,
-  POST,
-  PUT,
-  DELETE
-}
+enum HTTPMethod { GET, POST, PUT, DELETE }
 
 class SimpleRequest {
   final HTTPMethod method;
@@ -29,10 +24,9 @@ class SimpleClient {
   final Client client;
   String baseUrl;
 
-  SimpleClient({String baseUrl, httpClient}) :
-    this.baseUrl = baseUrl,
-    client = httpClient == null ? new Client() : httpClient;
-
+  SimpleClient({String baseUrl, httpClient})
+      : this.baseUrl = baseUrl,
+        client = httpClient == null ? new Client() : httpClient;
 
   dynamic getMethodCall(HTTPMethod method) {
     switch (method) {
@@ -43,33 +37,26 @@ class SimpleClient {
     }
   }
 
-  Future<dynamic> get(Uri url, { Map<String, String> headers}) {
-
-    return sendRequest(
-        new SimpleRequest(
-          HTTPMethod.GET,
-          url,
-          headers: headers,
-        )
-    );
+  Future<dynamic> get(Uri url, {Map<String, String> headers}) {
+    return sendRequest(new SimpleRequest(
+      HTTPMethod.GET,
+      url,
+      headers: headers,
+    ));
   }
 
-  Future<dynamic> post(Uri url, { dynamic body, Map<String, String> headers}) {
-    return sendRequest(
-        new SimpleRequest(
-          HTTPMethod.POST,
-          url,
-          body: body,
-          headers: headers,
-        )
-    );
+  Future<dynamic> post(Uri url, {dynamic body, Map<String, String> headers}) {
+    return sendRequest(new SimpleRequest(
+      HTTPMethod.POST,
+      url,
+      body: body,
+      headers: headers,
+    ));
   }
-
 
   Future sendRequest(SimpleRequest request) {
-    String reqBody = request.body != null
-        ? JSON.encoder.convert(request.body)
-        : null;
+    String reqBody =
+        request.body != null ? json.encoder.convert(request.body) : null;
 
     Map<String, String> headers = {
       HttpHeaders.CONTENT_TYPE: 'application/json'
@@ -80,29 +67,20 @@ class SimpleClient {
     dynamic methodClient = getMethodCall(request.method);
 
     if (reqBody == null) {
-      return processResponse(
-          methodClient(
-              request.url,
-              headers: headers,
-          )
-      );
+      return processResponse(methodClient(
+        request.url,
+        headers: headers,
+      ));
     } else {
       return processResponse(
-          methodClient(
-              request.url,
-              headers: headers,
-              body: reqBody
-          )
-      );
+          methodClient(request.url, headers: headers, body: reqBody));
     }
   }
 
   Future processResponse(Future<Response> response) {
-    return response
-        .catchError((err) {
+    return response.catchError((err) {
       throw new HttpException('Error sending request');
-    })
-    .then((Response response) {
+    }).then((Response response) {
       final statusCode = response.statusCode;
 
       if (statusCode < 200 || statusCode >= 300) {
@@ -110,7 +88,7 @@ class SimpleClient {
             'Unexpected status code [$statusCode]: ${response.body}');
       }
 
-      dynamic respBody = JSON.decode(response.body);
+      dynamic respBody = json.decode(response.body);
 
       if (respBody == null) {
         throw new HttpException('Error parsing response');
@@ -119,5 +97,4 @@ class SimpleClient {
       return respBody;
     });
   }
-
 }
