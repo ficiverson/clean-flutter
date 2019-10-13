@@ -20,10 +20,11 @@ class UserRemoteDataSource {
     try {
       Uri url = Uri.parse(_client.baseUrl + endpoint);
       var res = await this._client.get(url);
-      List<Map<String, dynamic>> items = res["results"];
+      List<dynamic> items = res["results"];
       List<UserSource> users = items
           .map((r) => new UserSource.fromMap(r))
           .toList();
+
       return users;
     } on HttpException catch (e) {
       return [];
@@ -55,7 +56,7 @@ class UserFileLocalDataSource implements UserLocalDataSource {
       if (testing) {
         items = res["results"];
       } else {
-        items = JSON.decode(res["results"]);
+        items = json.decode(res["results"]);
       }
       List<UserSource> users = items
           .map((r) => new UserSource.fromMap(r))
@@ -75,8 +76,8 @@ class UserFileLocalDataSource implements UserLocalDataSource {
       List<Map<String, dynamic>> userMap = new List<Map<String, dynamic>>();
       users.forEach((user) => userMap.add(user.toMap()));
       Map results = new Map();
-      results["results"] = JSON.encode(userMap);
-      await (await _getFile()).writeAsString(JSON.encode(results).toString());
+      results["results"] = json.encode(userMap);
+      await (await _getFile()).writeAsString(json.encode(results).toString());
     }
   }
 
@@ -98,9 +99,9 @@ class UserFileLocalDataSource implements UserLocalDataSource {
       File file = await _getFile();
       // read the variable as a string from the file.
       String contents = await file.readAsString();
-      return JSON.decode(contents);
+      return json.decode(contents);
     } on FileSystemException {
-      return JSON.decode("");
+      return json.decode("");
     }
   }
 }

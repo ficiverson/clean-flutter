@@ -1,6 +1,5 @@
 import 'package:cleanflutter/ui/animation/flight_animation.dart';
 import 'package:cleanflutter/ui/customview/custom_touch_view.dart';
-import 'package:cleanflutter/ui/detail/detail_view.dart';
 import 'package:cleanflutter/ui/home/drawer_menu.dart';
 import 'package:cleanflutter/ui/model/user.dart';
 import 'package:flutter/material.dart';
@@ -190,6 +189,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   onError(String msg) {
     //TODO show a popup with the error
+    setState(() => _loading = false);
     print(msg);
   }
 

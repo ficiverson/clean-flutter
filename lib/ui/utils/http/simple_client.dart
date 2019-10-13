@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart';
+import 'dart:convert';
 
 enum HTTPMethod {
   GET,
@@ -68,7 +67,7 @@ class SimpleClient {
 
   Future sendRequest(SimpleRequest request) {
     String reqBody = request.body != null
-        ? JSON.encoder.convert(request.body)
+        ? json.encoder.convert(request.body)
         : null;
 
     Map<String, String> headers = {
@@ -110,7 +109,7 @@ class SimpleClient {
             'Unexpected status code [$statusCode]: ${response.body}');
       }
 
-      dynamic respBody = JSON.decode(response.body);
+      dynamic respBody = json.decode(response.body);
 
       if (respBody == null) {
         throw new HttpException('Error parsing response');

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cleanflutter/data/model/user.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/data/usecase/user_use_case.dart';
@@ -43,15 +44,29 @@ class HomePresenter {
    *
    * params: datapolicy
    */
-  fetchUsers(DataPolicy datapolicy) async {
-    var result = await new UserUseCase(
-        Injector.provideUserRepository())
-        .fetchUsers(datapolicy);
-    if (result.status == Status.ok) {
-      _view.onLoadUsers(result.data);
-    } else {
-      _view.onError(result.status.toString());
+  fetchUsers(DataPolicy datapolicy) {
+    var userUserCase = new UserUseCase(Injector.provideUserRepository());
+    userUserCase.params = datapolicy;
+    userUserCase.execute().listen((result) {
+      if (result is Success) {
+        _view.onLoadUsers(_asUIContent(result).data);
+      } else {
+        _view.onError(result.status.toString());
+      }
+    });
+  }
+
+  /**
+   *
+   * convert domain model to view model
+   *
+   */
+  Result<List<User>> _asUIContent(Result<List<UserSource>> resultSource) {
+    List<User> resultList = new List<User>();
+    if (resultSource.getData() != null) {
+      resultSource.getData().forEach((u) => resultList.add(new User(u)));
     }
+    return new Result(resultSource.status, resultList);
   }
 
   /**

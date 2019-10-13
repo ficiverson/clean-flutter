@@ -17,7 +17,7 @@ class UserSource {
         picture = map["picture"]["large"],
         first = map["name"]["first"],
         last = map["name"]["last"],
-        street = map["location"] != null ? map["location"]["street"]  : null,
+        street = map["location"] != null ? map["location"]["street"]["name"]  : null,
         city = map["location"] != null ? map["location"]["city"]  : null,
         state = map["location"] != null ? map["location"]["state"]  : null,
         postcode = map["location"] != null ? map["location"]["postcode"].toString() : null;

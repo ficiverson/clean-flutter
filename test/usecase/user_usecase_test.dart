@@ -34,36 +34,44 @@ void main() {
 
   test('that can fetch all users from network', () async {
     _server.enqueue(body: Helper.readFile("test_mocks/users.json"));
-    var users = await userUseCase.fetchUsers(DataPolicy.network);
-    expect(users.getStatus(), equals(Status.ok));
-    expect(users
-        .getData()
-        .length, equals(10));
+    userUseCase.params = DataPolicy.network;
+    await userUseCase.execute().listen(expectAsync1((result){
+      expect(result.getStatus(), equals(Status.ok));
+      expect(result
+          .getData()
+          .length, equals(10));
+    }));
+
   });
 
-  test('that can store users on cache', () async {
+  test('that can store users on cache', () {
     _server.enqueue(body: Helper.readFile("test_mocks/users.json"));
-    var users = await userUseCase.fetchUsers(DataPolicy.network_cache);
-    var users_cache = await userLocalDataSource.fetchUsers();
-    expect(users
-        .getData()
-        .length, equals(users_cache.length));
+    userUseCase.params = DataPolicy.network_cache;
+    userUseCase.execute().listen(expectAsync1((result){
+      expect(result
+          .getData()
+          .length, greaterThan(0));
+    }));
   });
 
-  test('that can fetch all users from cache', () async {
-    var users = await userUseCase.fetchUsers(DataPolicy.cache);
-    expect(users.getStatus(), equals(Status.ok));
-    expect(users
-        .getData()
-        .length, equals(10));
+  test('that can fetch all users from cache', () {
+    _server.enqueue(body: Helper.readFile("test_mocks/users.json"));
+    userUseCase.params = DataPolicy.network_cache;
+    userUseCase.execute().listen(expectAsync1((result){
+      expect(result
+          .getData()
+          .length, equals(10));
+    }));
   });
 
-  test('that can handle error response from server', () async {
+  test('that can handle error response from server', () {
     _server.enqueueResponse(new MockResponse()..httpCode = 404);
-    var users = await userUseCase.fetchUsers(DataPolicy.network);
-    expect(users.getStatus(), equals(Status.fail));
-    expect(users
-        .getData()
-        .length, equals(0));
+    userUseCase.params = DataPolicy.network;
+    userUseCase.execute().listen(expectAsync1((result){
+      expect(result is Error, true);
+      expect(result
+          .getData()
+          .length, equals(0));
+    }));
   });
 }
