@@ -37,17 +37,17 @@ class Injector {
     switch (_flavor) {
       case Flavor.MOCK:
         return new UserRepositoryImpl(
-            new UserRemoteDataSource(client: client),
+            provideRemoteDataSource(client),
             provideLocalDataSource(testing: true));
       case Flavor.PROD:
         return new UserRepositoryImpl(
-            new UserRemoteDataSource(), provideLocalDataSource());
+            provideRemoteDataSource(client), provideLocalDataSource());
       case Flavor.STAGE:
         return new UserRepositoryImpl(
-            new UserRemoteDataSource(), provideLocalDataSource());
+            provideRemoteDataSource(client), provideLocalDataSource());
       default:
         return new UserRepositoryImpl(
-            new UserRemoteDataSource(client: client),
+            provideRemoteDataSource(client),
             provideLocalDataSource(testing: true));
     }
   }
@@ -55,6 +55,10 @@ class Injector {
   static UserLocalDataSource provideLocalDataSource({bool testing}) {
     //TODO provide a file storage or database implementation depend on flavor
     return new UserFileLocalDataSource(testing: testing);
+  }
+
+  static UserRemoteDataSourceContract provideRemoteDataSource(Client client){
+    return  new UserRemoteDataSource(client: client);
   }
 
   Injector._internal();

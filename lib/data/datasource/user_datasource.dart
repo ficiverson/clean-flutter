@@ -8,7 +8,10 @@ import 'package:cleanflutter/ui/utils/http/client.dart';
 /**
  * Remote data source
  */
-class UserRemoteDataSource {
+abstract class UserRemoteDataSourceContract {
+  Future<List<UserSource>> fetchUsers();
+}
+class UserRemoteDataSource implements UserRemoteDataSourceContract {
   Client _client = new Client(baseUrl: "https://randomuser.me/api/");
   String endpoint = "?results=100";
 

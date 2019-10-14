@@ -21,8 +21,8 @@ class RowView extends StatelessWidget {
             children: <Widget>[
               new Container(
                   margin: const EdgeInsets.only(left: 16.0),
-                  width: 40.0,
-                  height: 40.0,
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  height: MediaQuery.of(context).size.width * 0.1,
                   decoration: new BoxDecoration(
                       borderRadius: new BorderRadius.all(
                           new Radius.circular(50.0)),
@@ -31,7 +31,7 @@ class RowView extends StatelessWidget {
                           fit: BoxFit.cover),
                       color: AppColors.blue_bubble)),
               new Container(
-                  width: 250.0,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   decoration: new BoxDecoration(
                       color: AppColors.blue_bubble,
                       borderRadius:

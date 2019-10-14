@@ -31,7 +31,7 @@ class HomePresenter {
    * Presenter lifecicle
    */
   void init() {
-    _enableChannel();
+   // _enableChannel();
     fetchUsers(DataPolicy.network_cache);
   }
 

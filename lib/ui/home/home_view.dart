@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage>
     optionsMenu.add(menuScan);
     optionsMenu.add(menuSettings);
     return new Container(
-        height: _margin * 2.5,
+        height: _margin * 3,
         decoration: new BoxDecoration(
             color: AppColors.white,
             border: new Border(
@@ -127,6 +127,16 @@ class _MyHomePageState extends State<MyHomePage>
           alignment: MainAxisAlignment.spaceAround,
           children: optionsMenu,
         ));
+  }
+
+  Widget generateFakeMenu(){
+    return new Container(
+        height: _margin * 3,
+        decoration: new BoxDecoration(
+            color: AppColors.white,
+            border: new Border(
+                top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
+        child:Center(child: Text('Hi! This is Flutter :)')));
   }
 
   //Lifecycle methods
@@ -152,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage>
                 color: AppColors.white,
                 iconSize: 35.0)
           ]),
-      endDrawer: new DrawerMenu(_reloadData),
+      endDrawer: generateFakeMenu() ,//new DrawerMenu(_reloadData),
       body: getMainBody(),
       bottomNavigationBar: generateMenu(),
     );

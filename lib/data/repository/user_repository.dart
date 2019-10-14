@@ -9,10 +9,9 @@ abstract class UserRepository {
   saveUsers(List<UserSource> users);
 }
 
-//todo depend in the remotedatasource contract and put injector
 
 class UserRepositoryImpl implements UserRepository {
-  UserRemoteDataSource userRemoteDataSource;
+  UserRemoteDataSourceContract userRemoteDataSource;
   UserLocalDataSource userLocalDataSource;
 
   UserRepositoryImpl(UserRemoteDataSource remoteDataSource,
