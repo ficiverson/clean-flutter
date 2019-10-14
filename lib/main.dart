@@ -1,8 +1,11 @@
 import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/ui/home/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 
 void main() {
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   Injector.configure(Flavor.PROD);
   runApp(
       new MyApp()

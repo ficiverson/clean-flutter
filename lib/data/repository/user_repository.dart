@@ -9,8 +9,9 @@ abstract class UserRepository {
   saveUsers(List<UserSource> users);
 }
 
+
 class UserRepositoryImpl implements UserRepository {
-  UserRemoteDataSource userRemoteDataSource;
+  UserRemoteDataSourceContract userRemoteDataSource;
   UserLocalDataSource userLocalDataSource;
 
   UserRepositoryImpl(UserRemoteDataSource remoteDataSource,
@@ -24,14 +25,17 @@ class UserRepositoryImpl implements UserRepository {
     if (datapolicy == DataPolicy.network ||
         datapolicy == DataPolicy.network_cache) {
       users = await userRemoteDataSource.fetchUsers();
+      if(datapolicy == DataPolicy.network_cache) {
+        saveUsers(users);
+      }
     } else {
       users = await userLocalDataSource.fetchUsers();
     }
 
     if (users.length > 0) {
-      return new Result(Status.ok, users);
+      return new Success(users, Status.ok);
     } else {
-      return new Result(Status.fail, []);
+      return new Error([],Status.fail, "Error fetching users");
     }
   }
 

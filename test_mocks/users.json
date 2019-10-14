@@ -8,7 +8,7 @@
         "last": "dupuis"
       },
       "location": {
-        "street": "7453 boulevard de la duchère",
+        "street": {"name":"7453 boulevard de la duchère"},
         "city": "strasbourg",
         "state": "saône-et-loire",
         "postcode": 65034
@@ -45,7 +45,7 @@
         "last": "jones"
       },
       "location": {
-        "street": "4172 albany expressway",
+        "street": {"name":"4172 albany expressway"},
         "city": "whangarei",
         "state": "west coast",
         "postcode": 85255
@@ -82,7 +82,7 @@
         "last": "samancı"
       },
       "location": {
-        "street": "2573 tunalı hilmi cd",
+        "street": {"name":"2573 tunalı hilmi cd"},
         "city": "çanakkale",
         "state": "sinop",
         "postcode": 32973
@@ -119,7 +119,7 @@
         "last": "gruber"
       },
       "location": {
-        "street": "2900 eichenweg",
+        "street": {"name":"2900 eichenweg"},
         "city": "regensburg",
         "state": "saarland",
         "postcode": 60600
@@ -156,7 +156,7 @@
         "last": "rasmussen"
       },
       "location": {
-        "street": "6789 lyngbakken",
+        "street": {"name":"6789 lyngbakken"},
         "city": "﻿aaborg øst",
         "state": "nordjylland",
         "postcode": 79158
@@ -193,7 +193,7 @@
         "last": "williams"
       },
       "location": {
-        "street": "4912 the avenue",
+        "street": {"name":"4912 the avenue"},
         "city": "carrigtwohill",
         "state": "clare",
         "postcode": 77358
@@ -230,7 +230,7 @@
         "last": "sinanoğlu"
       },
       "location": {
-        "street": "8336 istiklal cd",
+        "street": {"name":"8336 istiklal cd"},
         "city": "ordu",
         "state": "isparta",
         "postcode": 52814
@@ -267,7 +267,7 @@
         "last": "aalto"
       },
       "location": {
-        "street": "9341 siilitie",
+        "street": {"name":"9341 siilitie"},
         "city": "pello",
         "state": "åland",
         "postcode": 75608
@@ -304,7 +304,7 @@
         "last": "roche"
       },
       "location": {
-        "street": "6740 cours charlemagne",
+        "street": {"name":"6740 cours charlemagne"},
         "city": "paris",
         "state": "cher",
         "postcode": 46483
@@ -341,7 +341,7 @@
         "last": "johnson"
       },
       "location": {
-        "street": "5566 mt eden road",
+        "street": {"name":"5566 mt eden road"},
         "city": "timaru",
         "state": "hawke's bay",
         "postcode": 98606

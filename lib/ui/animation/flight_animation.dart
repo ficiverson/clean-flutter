@@ -87,8 +87,8 @@ class _FlightAnimationState extends State<FlightAnimation>
               child: new Icon(
                 //REPLACEME
                 Icons.flight,
-                // Icons.radio,
-                color: AppColors.blue_bubble,
+                 //Icons.radio,
+                color: AppColors.treeGreen,
                 size: 90.0,
               ),
             )

@@ -1,4 +1,3 @@
-
 import 'package:cleanflutter/ui/model/user.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/app_colors.dart';
 import 'package:flutter/widgets.dart';
@@ -8,10 +7,11 @@ class RowView extends StatelessWidget {
 
   User user;
 
-  RowView(User user){
+  RowView(User user) {
     this.user = user;
   }
 
+  //TODO add a link to second screen with a gesture detector??
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -21,8 +21,8 @@ class RowView extends StatelessWidget {
             children: <Widget>[
               new Container(
                   margin: const EdgeInsets.only(left: 16.0),
-                  width: 40.0,
-                  height: 40.0,
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  height: MediaQuery.of(context).size.width * 0.1,
                   decoration: new BoxDecoration(
                       borderRadius: new BorderRadius.all(
                           new Radius.circular(50.0)),
@@ -31,7 +31,7 @@ class RowView extends StatelessWidget {
                           fit: BoxFit.cover),
                       color: AppColors.blue_bubble)),
               new Container(
-                  width: 250.0,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   decoration: new BoxDecoration(
                       color: AppColors.blue_bubble,
                       borderRadius:

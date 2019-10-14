@@ -24,3 +24,11 @@ class Result<T> {
     return status;
   }
 }
+
+class Success<T> extends Result<T>{
+  Success(T data, Status dataStatus) : super(dataStatus,data);
+}
+
+class Error<T> extends Result<T>{
+  Error(T data, Status dataStatus, String error) : super(dataStatus,data);
+}
