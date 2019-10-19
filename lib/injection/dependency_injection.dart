@@ -23,6 +23,7 @@ class DependencyInjector {
 
   static void configure(Flavor flavor) {
     _flavor = flavor;
+    Injector.appInstance.registerDependency<Client>((_) => Client(baseUrl: "localhost"),override:true);
   }
 
   static Flavor getFlavor() {
@@ -88,7 +89,7 @@ class DependencyInjector {
   }
 
   loadRemoteDatasourceModules() {
-    injector.registerDependency<Client>((_) => Client(baseUrl: "https://randomuser.me/api/"));
+    injector.registerDependency<Client>((_) => Client(baseUrl: "https://randomuser.me/api/"), override : true);
     injector.registerDependency<UserRemoteDataSourceContract>(
             (Injector injector) {
               var client =
