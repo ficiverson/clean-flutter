@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 
+import 'injection/dependency_injection.dart';
+
 void main() {
+  DependencyInjector.configure(Flavor.PROD);
+  DependencyInjector().loadModules();
   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-  Injector.configure(Flavor.PROD);
   runApp(
       new MyApp()
   );
@@ -25,11 +28,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: new MyHomePage(),
-//        routes: <String, WidgetBuilder>{
-//          '/scanScreen': (BuildContext context) =>
-//          new ScanScreen(title: 'Scan promotion'),
-//        }
+      home: new MyHomePage()
     );
   }
 }

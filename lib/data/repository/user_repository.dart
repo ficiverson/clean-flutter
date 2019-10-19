@@ -1,8 +1,10 @@
 import 'dart:async';
 
-import 'package:cleanflutter/data/datasource/user_datasource.dart';
+import 'package:cleanflutter/data/datasource/local_user_datasource.dart';
+import 'package:cleanflutter/data/datasource/remote_user_datasource.dart';
 import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/data/model/user.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class UserRepository {
   Future<Result<List<UserSource>>> fetchUsers(DataPolicy datapolicy);
@@ -12,13 +14,10 @@ abstract class UserRepository {
 
 class UserRepositoryImpl implements UserRepository {
   UserRemoteDataSourceContract userRemoteDataSource;
-  UserLocalDataSource userLocalDataSource;
+  UserLocalDataSourceContract userLocalDataSource;
 
-  UserRepositoryImpl(UserRemoteDataSource remoteDataSource,
-      UserLocalDataSource userLocalDataSource) {
-    this.userRemoteDataSource = remoteDataSource;
-    this.userLocalDataSource = userLocalDataSource;
-  }
+  UserRepositoryImpl({@required UserRemoteDataSourceContract this.userRemoteDataSource,
+    @required UserLocalDataSourceContract this.userLocalDataSource });
 
   Future<Result<List<UserSource>>> fetchUsers(DataPolicy datapolicy) async {
     List<UserSource> users;

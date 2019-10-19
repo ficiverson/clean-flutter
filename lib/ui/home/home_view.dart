@@ -1,3 +1,4 @@
+import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/ui/animation/flight_animation.dart';
 import 'package:cleanflutter/ui/customview/custom_touch_view.dart';
 import 'package:cleanflutter/ui/home/drawer_menu.dart';
@@ -10,16 +11,17 @@ import 'package:cleanflutter/ui/utils/uxhelper/iphone_x_padding.dart';
 import 'package:cleanflutter/ui/utils/uxhelper/padding_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cleanflutter/ui/home/row_view.dart';
+import 'package:injector/injector.dart';
 
 enum StateMenu { LIST, POINTER, ANIMATION }
 
 class MyHomePage extends StatefulWidget {
   @override
-  State createState() => new _MyHomePageState();
+  State createState() => new MyHomePageState();
 }
 
 
-class _MyHomePageState extends State<MyHomePage>
+class MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin
     implements HomeViewContract {
 
@@ -33,8 +35,8 @@ class _MyHomePageState extends State<MyHomePage>
   List<User> _users = new List<User>();
 
 
-  _MyHomePageState() {
-    _presenter = new HomePresenter(this);
+  MyHomePageState() {
+    DependencyInjector().injectByView(this);
   }
 
   //Build UI
@@ -162,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage>
                 color: AppColors.white,
                 iconSize: 35.0)
           ]),
-      endDrawer: generateFakeMenu() ,//new DrawerMenu(_reloadData),
+      endDrawer: new DrawerMenu(_reloadData),
       body: getMainBody(),
       bottomNavigationBar: generateMenu(),
     );
@@ -172,20 +174,21 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     super.initState();
-    _presenter = new HomePresenter(this);
+    _presenter = Injector.appInstance.getDependency<HomePresenter>();
     _presenter.init();
   }
 
   @override
   void dispose() {
     _presenter.dispose();
+    Injector.appInstance.removeByKey<HomeViewContract>();
     super.dispose();
   }
 
   //view implementation methods
   void _reloadData(DataPolicy policy) {
     setState(() {
-      _presenter.fetchUsers(policy);
+      _presenter.onReloadData(policy);
       Navigator.of(context).pop();
     });
   }

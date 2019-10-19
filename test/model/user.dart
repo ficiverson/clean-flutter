@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../instruments/mocks/MockUser.dart';
+import '../instruments/mocks/mock_user.dart';
 
 void main() {
   test('can create a user', () {

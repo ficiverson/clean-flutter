@@ -34,6 +34,7 @@ class IPhoneXPadding extends Container {
   }
 
   bool _isIPhoneX(MediaQueryData mediaQuery) {
+    return false;
     if(identical(0, 0.0)){
       return false;
     } else if (Platform.isIOS) {
