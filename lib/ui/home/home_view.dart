@@ -20,11 +20,9 @@ class MyHomePage extends StatefulWidget {
   State createState() => new MyHomePageState();
 }
 
-
 class MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin
     implements HomeViewContract {
-
   StateMenu currentState = StateMenu.LIST;
   HomePresenter _presenter;
   Scaffold _scaffold;
@@ -33,7 +31,6 @@ class MyHomePageState extends State<MyHomePage>
   double _margin = 20.0;
   bool _loading = true;
   List<User> _users = new List<User>();
-
 
   MyHomePageState() {
     DependencyInjector().injectByView(this);
@@ -48,21 +45,24 @@ class MyHomePageState extends State<MyHomePage>
           returnWidget = new Center(child: new Text("Loading all data"));
         } else {
           returnWidget = new Container(
-              color: AppColors.platinumdark, child: new ListView.builder(
-            itemCount: _users.length,
-            reverse: false,
-            itemBuilder: (_, int index) {
-              return new RowView(_users[index]);
-            },
-          ));
+              color: AppColors.platinumdark,
+              child: new ListView.builder(
+                key: Key("user_list"),
+                itemCount: _users.length,
+                reverse: false,
+                itemBuilder: (_, int index) {
+                  return new RowView(_users[index]);
+                },
+              ));
         }
         return returnWidget;
 
       case StateMenu.ANIMATION:
-        return new Container(child: new FlightAnimation());
+        return new Container(child: FlightAnimation(key: Key("custom_animation")));
 
       case StateMenu.POINTER:
         return new Container(
+            key: Key("custom_pointer"),
             decoration: new BoxDecoration(
               color: Colors.white,
               border: new Border.all(
@@ -70,9 +70,7 @@ class MyHomePageState extends State<MyHomePage>
                 width: 2.0,
               ),
             ),
-            child: new Center(
-                child: new CustomTouchView()
-            ));
+            child: new Center(child: new CustomTouchView()));
 
       default:
         throw new StateError('Unexpected action [${currentState}]');
@@ -82,6 +80,7 @@ class MyHomePageState extends State<MyHomePage>
   //create a menu bar
   generateMenu() {
     IconButton menuHome = new IconButton(
+      key: Key("user_list_item"),
       icon: new Icon(Icons.rss_feed, color: AppColors.blue_bubble),
       padding: new EdgeInsets.all(0.0),
       disabledColor: AppColors.dimgrey,
@@ -93,6 +92,7 @@ class MyHomePageState extends State<MyHomePage>
     );
     IconButton menuScan;
     menuScan = new IconButton(
+      key: Key("custom_pointer_item"),
       icon: new Icon(Icons.touch_app, color: AppColors.blue_bubble),
       padding: new EdgeInsets.all(0.0),
       disabledColor: AppColors.dimgrey,
@@ -104,6 +104,7 @@ class MyHomePageState extends State<MyHomePage>
     );
 
     IconButton menuSettings = new IconButton(
+      key: Key("custom_animation_item"),
       icon: new Icon(Icons.flight_land, color: AppColors.blue_bubble),
       padding: new EdgeInsets.all(0.0),
       disabledColor: AppColors.dimgrey,
@@ -131,14 +132,14 @@ class MyHomePageState extends State<MyHomePage>
         ));
   }
 
-  Widget generateFakeMenu(){
+  Widget generateFakeMenu() {
     return new Container(
         height: _margin * 3,
         decoration: new BoxDecoration(
             color: AppColors.white,
             border: new Border(
                 top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
-        child:Center(child: Text('Hi! This is Flutter :)')));
+        child: Center(child: Text('Hi! This is Flutter :)')));
   }
 
   //Lifecycle methods
