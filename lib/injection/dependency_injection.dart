@@ -1,7 +1,12 @@
-import 'package:cleanflutter/data/datasource/user_datasource.dart';
+import 'package:cleanflutter/data/datasource/local_user_datasource.dart';
+import 'package:cleanflutter/data/datasource/remote_user_datasource.dart';
 import 'package:cleanflutter/data/repository/user_repository.dart';
-import 'package:cleanflutter/ui/utils/http/client.dart';
+import 'package:cleanflutter/data/usecase/user_use_case.dart';
+import 'package:cleanflutter/ui/home/home_presenter.dart';
+import 'package:cleanflutter/ui/home/home_view.dart';
 import 'package:flutter/services.dart';
+import 'package:injector/injector.dart';
+import 'package:cleanflutter/ui/utils/http/client.dart';
 
 enum Flavor {
   MOCK,
@@ -9,9 +14,10 @@ enum Flavor {
   STAGE
 }
 
-class Injector {
-
-  static final Injector _singleton = new Injector._internal();
+class DependencyInjector {
+  get injector {
+    return Injector.appInstance;
+  }
 
   static Flavor _flavor;
 
@@ -29,38 +35,65 @@ class Injector {
   static const EventChannel eventChannel = const EventChannel(
       'clean.flutter.io/stream');
 
-  factory Injector() {
-    return _singleton;
+  loadModules() {
+    loadPresentationModules();
+    loadDomainModules();
+    loadDataModules();
+    loadLocalDatasourceModules();
+    loadRemoteDatasourceModules();
   }
 
-  static UserRepository provideUserRepository({Client client}) {
-    switch (_flavor) {
-      case Flavor.MOCK:
-        return new UserRepositoryImpl(
-            provideRemoteDataSource(client),
-            provideLocalDataSource(testing: true));
-      case Flavor.PROD:
-        return new UserRepositoryImpl(
-            provideRemoteDataSource(client), provideLocalDataSource());
-      case Flavor.STAGE:
-        return new UserRepositoryImpl(
-            provideRemoteDataSource(client), provideLocalDataSource());
-      default:
-        return new UserRepositoryImpl(
-            provideRemoteDataSource(client),
-            provideLocalDataSource(testing: true));
+  injectByView(dynamic view) {
+    if (view is MyHomePageState) {
+      injector
+          .registerDependency<HomeViewContract>((Injector injector) => view);
     }
   }
 
-  static UserLocalDataSource provideLocalDataSource({bool testing}) {
+
+  loadPresentationModules() {
+    injector.registerDependency<HomePresenter>((Injector injector) {
+      return new HomePresenter(
+          view: injector.getDependency<HomeViewContract>(),
+          fetchUsersUseCase: injector.getDependency<UserUseCase>());
+    });
+
+  }
+
+  loadDomainModules() {
+    injector.registerDependency<UserUseCase>((Injector injector) {
+      var userRepository = injector.getDependency<UserRepository>();
+      return UserUseCase(userRepository: userRepository);
+    });
+  }
+
+  loadDataModules() {
+    injector.registerDependency<UserRepository>((Injector injector) {
+      var localDataSource =
+      injector.getDependency<UserLocalDataSourceContract>();
+      var remoteDataSource =
+      injector.getDependency<UserRemoteDataSourceContract>();
+      return UserRepositoryImpl(
+          userRemoteDataSource: remoteDataSource,userLocalDataSource: localDataSource);
+    });
+  }
+
+  loadLocalDatasourceModules() {
     //TODO provide a file storage or database implementation depend on flavor
-    return new UserFileLocalDataSource(testing: testing);
+    injector
+        .registerDependency<UserLocalDataSourceContract>((Injector injector) {
+      return new UserFileLocalDataSource();
+    });
+
   }
 
-  static UserRemoteDataSourceContract provideRemoteDataSource(Client client){
-    return  new UserRemoteDataSource(client: client);
+  loadRemoteDatasourceModules() {
+    injector.registerDependency<Client>((_) => Client(baseUrl: "https://randomuser.me/api/"));
+    injector.registerDependency<UserRemoteDataSourceContract>(
+            (Injector injector) {
+              var client =
+              injector.getDependency<Client>();
+          return new UserRemoteDataSource(client: client);
+        });
   }
-
-  Injector._internal();
-
 }

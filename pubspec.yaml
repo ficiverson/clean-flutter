@@ -14,6 +14,8 @@ dependencies:
 
   http: ^0.12.0
 
+  injector: ^1.0.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

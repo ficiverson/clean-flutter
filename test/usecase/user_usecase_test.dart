@@ -1,27 +1,29 @@
-import 'package:cleanflutter/data/datasource/user_datasource.dart';
+import 'package:cleanflutter/data/datasource/local_user_datasource.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
 import 'package:cleanflutter/data/usecase/user_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:injector/injector.dart';
 import 'package:mock_web_server/mock_web_server.dart';
+import '../instruments/datasource/local-data_source_instrument.dart';
 import '../instruments/helper.dart';
 
 
 void main() {
   UserUseCase userUseCase;
-  UserLocalDataSource userLocalDataSource;
   MockWebServer _server;
-  Client _client;
 
   setUpAll(() async {
-    Injector.configure(Flavor.MOCK);
+    DependencyInjector.configure(Flavor.MOCK);
+    DependencyInjector().loadModules();
     _server = new MockWebServer();
     await _server.start();
-    _client = new Client(baseUrl: _server.url);
-    userLocalDataSource = Injector.provideLocalDataSource(testing: true);
-    userUseCase =
-    new UserUseCase(Injector.provideUserRepository(client: _client));
+    Injector.appInstance.registerDependency<Client>((_) => Client(baseUrl: _server.url),override:true);
+    Injector.appInstance.registerDependency<UserLocalDataSourceContract>((Injector injector) {
+      return new UserFileLocalDataSourceInstrument();
+    },override:true);
+    userUseCase = Injector.appInstance.getDependency<UserUseCase>();
   });
 
   tearDownAll(() async {
