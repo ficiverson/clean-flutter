@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cleanflutter/data/model/user.dart';
+import 'package:cleanflutter/data/usecase/invoker.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/data/usecase/user_use_case.dart';
@@ -24,8 +25,9 @@ class HomePresenter {
   MethodChannel methodChannel;
   EventChannel eventChannel;
   StreamSubscription _subscription = null;
+  Invoker invoker;
 
-  HomePresenter({@required this.view, @required this.fetchUsersUseCase}){
+  HomePresenter({@required this.invoker,@required this.view, @required this.fetchUsersUseCase}){
     methodChannel = DependencyInjector.methodChanel;
     eventChannel = DependencyInjector.eventChannel;
   }
@@ -46,11 +48,11 @@ class HomePresenter {
   /// Fetch the user data and persist when policy is storage
   ///
   /// params: datapolicy
-  fetchUsers(DataPolicy datapolicy) {
-    fetchUsersUseCase.params = datapolicy;
-    fetchUsersUseCase.execute().listen((result) {
+  fetchUsers(DataPolicy dataPolicy) {
+    invoker.execute(fetchUsersUseCase.withParams(dataPolicy)).listen((result) {
+      print(result.status);
       if (result is Success) {
-        view.onLoadUsers(_asUIContent(result).data);
+        view.onLoadUsers(_asUIContent(result as Result).data);
       } else {
         view.onError(result.status.toString());
       }

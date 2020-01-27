@@ -1,6 +1,7 @@
 import 'package:cleanflutter/data/datasource/local_user_datasource.dart';
 import 'package:cleanflutter/data/datasource/remote_user_datasource.dart';
 import 'package:cleanflutter/data/repository/user_repository.dart';
+import 'package:cleanflutter/data/usecase/invoker.dart';
 import 'package:cleanflutter/data/usecase/user_use_case.dart';
 import 'package:cleanflutter/ui/home/home_presenter.dart';
 import 'package:cleanflutter/ui/home/home_view.dart';
@@ -53,8 +54,13 @@ class DependencyInjector {
 
 
   loadPresentationModules() {
+    injector.registerSingleton<Invoker>((Injector injector){
+      return Invoker();
+    });
+
     injector.registerDependency<HomePresenter>((Injector injector) {
       return new HomePresenter(
+          invoker : injector.getDependency<Invoker>(),
           view: injector.getDependency<HomeViewContract>(),
           fetchUsersUseCase: injector.getDependency<UserUseCase>());
     });
