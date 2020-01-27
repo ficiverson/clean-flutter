@@ -7,7 +7,7 @@ import 'instruments/user-remote-data-source.dart';
 void main() {
   enableFlutterDriverExtension();
   app.main();
- overrideDependencies();
+  overrideDependencies();
 }
 
 void overrideDependencies(){

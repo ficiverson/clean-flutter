@@ -6,9 +6,13 @@ enum DataPolicy{
 enum Status{
   ok, fail
 }
+enum DataProvider { local, network}
+
 class Result<T> {
 
   Status status;
+  DataProvider provider;
+
   T data;
 
   Result(Status status, T data){

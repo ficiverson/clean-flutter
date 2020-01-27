@@ -1,18 +1,22 @@
 import 'package:cleanflutter/data/result/result.dart';
+import 'package:cleanflutter/data/usecase/use_case_callback.dart';
 
 abstract class BaseUseCase<P,T>{
   P params;
-  List<Future<Result<T>>> _results = [];
+  UseCaseCallback callback;
+  void invoke();
 
-  Stream<Result<T>> execute();
-
-  void addResult(Future<Result<T>> task){
-    _results.add(task);
+  BaseUseCase(){
+    callback = UseCaseCallback();
   }
 
-  Stream<Result<T>> notifyResults(){
-    Stream<Result<T>> stream =  new Stream.fromFutures(_results);
-    _results.clear();
-    return stream;
+  void notifyListeners(Future<Result<T>> task){
+    callback.addTask(task);
+  }
+
+  BaseUseCase<P,T> withParams(P params) {
+    this.params = params;
+    return this;
   }
 }
+

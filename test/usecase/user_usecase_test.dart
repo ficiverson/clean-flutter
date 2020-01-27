@@ -1,4 +1,5 @@
 import 'package:cleanflutter/data/datasource/local_user_datasource.dart';
+import 'package:cleanflutter/data/usecase/invoker.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/data/result/result.dart';
 import 'package:cleanflutter/ui/utils/http/client.dart';
@@ -13,6 +14,7 @@ import '../instruments/helper.dart';
 void main() {
   UserUseCase userUseCase;
   MockWebServer _server;
+  Invoker invoker;
 
   setUpAll(() async {
     DependencyInjector.configure(Flavor.MOCK);
@@ -24,6 +26,8 @@ void main() {
       return new UserFileLocalDataSourceInstrument();
     },override:true);
     userUseCase = Injector.appInstance.getDependency<UserUseCase>();
+    invoker = Injector.appInstance.getDependency<Invoker>();
+
   });
 
   tearDownAll(() async {
@@ -36,8 +40,8 @@ void main() {
 
   test('that can fetch all users from network', () async {
     _server.enqueue(body: Helper.readFile("test_mocks/users.json"));
-    userUseCase.params = DataPolicy.network;
-    await userUseCase.execute().listen(expectAsync1((result){
+
+    await invoker.execute(userUseCase.withParams(DataPolicy.network)).listen(expectAsync1((result){
       expect(result.getStatus(), equals(Status.ok));
       expect(result
           .getData()
@@ -48,8 +52,7 @@ void main() {
 
   test('that can store users on cache', () {
     _server.enqueue(body: Helper.readFile("test_mocks/users.json"));
-    userUseCase.params = DataPolicy.network_cache;
-    userUseCase.execute().listen(expectAsync1((result){
+    invoker.execute(userUseCase.withParams(DataPolicy.network_cache)).listen(expectAsync1((result){
       expect(result
           .getData()
           .length, greaterThan(0));
@@ -58,8 +61,7 @@ void main() {
 
   test('that can fetch all users from cache', () {
     _server.enqueue(body: Helper.readFile("test_mocks/users.json"));
-    userUseCase.params = DataPolicy.network_cache;
-    userUseCase.execute().listen(expectAsync1((result){
+    invoker.execute(userUseCase.withParams(DataPolicy.network_cache)).listen(expectAsync1((result){
       expect(result
           .getData()
           .length, equals(10));
@@ -68,8 +70,7 @@ void main() {
 
   test('that can handle error response from server', () {
     _server.enqueueResponse(new MockResponse()..httpCode = 404);
-    userUseCase.params = DataPolicy.network;
-    userUseCase.execute().listen(expectAsync1((result){
+    invoker.execute(userUseCase.withParams(DataPolicy.network)).listen(expectAsync1((result){
       expect(result is Error, true);
       expect(result
           .getData()

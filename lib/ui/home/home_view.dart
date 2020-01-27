@@ -1,3 +1,5 @@
+import 'package:clay_containers/constants.dart';
+import 'package:clay_containers/widgets/clay_containers.dart';
 import 'package:cleanflutter/injection/dependency_injection.dart';
 import 'package:cleanflutter/ui/animation/flight_animation.dart';
 import 'package:cleanflutter/ui/customview/custom_touch_view.dart';
@@ -58,7 +60,8 @@ class MyHomePageState extends State<MyHomePage>
         return returnWidget;
 
       case StateMenu.ANIMATION:
-        return new Container(child: FlightAnimation(key: Key("custom_animation")));
+        return new Container(
+            child: FlightAnimation(key: Key("custom_animation")));
 
       case StateMenu.POINTER:
         return new Container(
@@ -79,41 +82,56 @@ class MyHomePageState extends State<MyHomePage>
 
   //create a menu bar
   generateMenu() {
-    IconButton menuHome = new IconButton(
-      key: Key("user_list_item"),
-      icon: new Icon(Icons.rss_feed, color: AppColors.blue_bubble),
-      padding: new EdgeInsets.all(0.0),
-      disabledColor: AppColors.dimgrey,
-      onPressed: () {
-        setState(() {
-          currentState = StateMenu.LIST;
-        });
-      },
-    );
-    IconButton menuScan;
-    menuScan = new IconButton(
-      key: Key("custom_pointer_item"),
-      icon: new Icon(Icons.touch_app, color: AppColors.blue_bubble),
-      padding: new EdgeInsets.all(0.0),
-      disabledColor: AppColors.dimgrey,
-      onPressed: () {
-        setState(() {
-          currentState = StateMenu.POINTER;
-        });
-      },
-    );
+    ClayContainer menuHome = ClayContainer(
+        emboss: currentState == StateMenu.LIST,
+        curveType: currentState == StateMenu.LIST ? CurveType.concave : CurveType.convex,
+        borderRadius: 50,
+        parentColor: Color(0xFFF2F2F2),
+        child: new IconButton(
+          key: Key("user_list_item"),
+          icon: new Icon(Icons.rss_feed, color: AppColors.blue_bubble),
+          padding: new EdgeInsets.all(0.0),
+          disabledColor: AppColors.dimgrey,
+          onPressed: () {
+            setState(() {
+              currentState = StateMenu.LIST;
+            });
+          },
+        ));
+    ClayContainer menuScan;
+    menuScan = ClayContainer(
+        emboss: currentState == StateMenu.POINTER,
+        curveType: currentState == StateMenu.POINTER ? CurveType.concave : CurveType.convex,
+        borderRadius: 50,
+        parentColor: Color(0xFFF2F2F2),
+        child: new IconButton(
+          key: Key("custom_pointer_item"),
+          icon: new Icon(Icons.touch_app, color: AppColors.blue_bubble),
+          padding: new EdgeInsets.all(0.0),
+          disabledColor: AppColors.dimgrey,
+          onPressed: () {
+            setState(() {
+              currentState = StateMenu.POINTER;
+            });
+          },
+        ));
 
-    IconButton menuSettings = new IconButton(
-      key: Key("custom_animation_item"),
-      icon: new Icon(Icons.flight_land, color: AppColors.blue_bubble),
-      padding: new EdgeInsets.all(0.0),
-      disabledColor: AppColors.dimgrey,
-      onPressed: () {
-        setState(() {
-          currentState = StateMenu.ANIMATION;
-        });
-      },
-    );
+    ClayContainer menuSettings = ClayContainer(
+        emboss: currentState == StateMenu.ANIMATION,
+        curveType: currentState == StateMenu.ANIMATION ? CurveType.concave : CurveType.convex,
+        borderRadius: 50,
+        parentColor: Color(0xFFF2F2F2),
+        child: new IconButton(
+          key: Key("custom_animation_item"),
+          icon: new Icon(Icons.flight_land, color: AppColors.blue_bubble),
+          padding: new EdgeInsets.all(0.0),
+          disabledColor: AppColors.dimgrey,
+          onPressed: () {
+            setState(() {
+              currentState = StateMenu.ANIMATION;
+            });
+          },
+        ));
 
     List<Widget> optionsMenu = new List<Widget>();
     optionsMenu.add(menuHome);
@@ -122,7 +140,7 @@ class MyHomePageState extends State<MyHomePage>
     return new Container(
         height: _margin * 3,
         decoration: new BoxDecoration(
-            color: AppColors.white,
+            color: Color(0xFFF2F2F2),
             border: new Border(
                 top: new BorderSide(color: AppColors.dimgrey, width: 0.1))),
         child: new ButtonBar(
@@ -165,7 +183,7 @@ class MyHomePageState extends State<MyHomePage>
                 color: AppColors.white,
                 iconSize: 35.0)
           ]),
-      endDrawer: new DrawerMenu(_reloadData),
+      endDrawer: DrawerMenu(_reloadData),
       body: getMainBody(),
       bottomNavigationBar: generateMenu(),
     );
